@@ -1,8 +1,11 @@
 import PropTypes from 'prop-types';
 import { RxCrossCircled } from 'react-icons/rx';
+import { useDispatch } from 'react-redux';
+import { deleteContact } from '../../../redux/contactsSlice';
 import { Name, PhoneNumber, Item, Btn } from './ContactItem.styled';
 
-export const ContactItem = ({ contact, onDelete }) => {
+export const ContactItem = ({ contact }) => {
+  const dispatch = useDispatch();
   const { id, name, number } = contact;
   return (
     <>
@@ -12,7 +15,7 @@ export const ContactItem = ({ contact, onDelete }) => {
         <Btn
           type="button"
           aria-label="Delete contact"
-          onClick={() => onDelete(id)}
+          onClick={() => dispatch(deleteContact(id))}
         >
           <RxCrossCircled size="2em" />
         </Btn>
@@ -27,5 +30,4 @@ ContactItem.propTypes = {
     name: PropTypes.string.isRequired,
     number: PropTypes.string.isRequired,
   }),
-  onDelete: PropTypes.func,
 };

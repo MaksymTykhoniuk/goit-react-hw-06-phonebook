@@ -1,12 +1,15 @@
-import PropTypes from 'prop-types';
 import { RiUserAddFill } from 'react-icons/ri';
-
+import { useState } from 'react';
 import { nanoid } from 'nanoid';
 import { Notify } from 'notiflix';
 import { Form, Btn, Input } from './PhonebookForm.styled';
-import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { addContact } from '../../../redux/contactsSlice';
 
-export const PhonebookForm = ({ contacts, addContact }) => {
+export const PhonebookForm = () => {
+  const contacts = useSelector(state => state.contacts.value);
+  const dispatch = useDispatch();
+
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
 
@@ -39,7 +42,7 @@ export const PhonebookForm = ({ contacts, addContact }) => {
       Notify.failure(`${contact.name} is already in contacts`);
       return;
     } else {
-      addContact(contact);
+      dispatch(addContact(contact));
     }
 
     resetForm();
@@ -77,15 +80,4 @@ export const PhonebookForm = ({ contacts, addContact }) => {
       </Btn>
     </Form>
   );
-};
-
-PhonebookForm.propTypes = {
-  addContact: PropTypes.func,
-  contacts: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.string.isRequired,
-      name: PropTypes.string.isRequired,
-      number: PropTypes.string.isRequired,
-    })
-  ),
 };
